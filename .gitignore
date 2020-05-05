@@ -1,0 +1,11 @@
+*.txt
+.ipynb_checkpoints/
+.DS_Store
+__pycache__/
+env.py
+*.png
+acquire_testing.ipynb
+prepare_testing.ipynb
+exploration_testing.ipynb
+model_testing.ipynb
+log_reg_util.py
