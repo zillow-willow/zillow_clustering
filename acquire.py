@@ -47,7 +47,7 @@ def drop_columns(df):
     columns_to_drop = ['architecturalstyletypeid', 'airconditioningtypeid','basementsqft', 
                        'buildingclasstypeid', 'decktypeid', 'finishedfloor1squarefeet',
                        'finishedsquarefeet13', 'finishedsquarefeet15', 'finishedsquarefeet50', 
-                       'finishedsquarefeet6', 'fireplacecnt', 'hashottuborspa', 
+                       'finishedsquarefeet6', 'fireplacecnt', 'garagetotalsqft', 'hashottuborspa', 
                        'heatingorsystemtypeid','poolsizesum','pooltypeid10', 'pooltypeid2', 
                        'pooltypeid7', 'regionidneighborhood', 'storytypeid', 
                        'threequarterbathnbr', 'typeconstructiontypeid','yardbuildingsqft17', 
