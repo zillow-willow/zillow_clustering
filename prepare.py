@@ -15,7 +15,7 @@ def impute_median(df):
     df.finishedsquarefeet12 = df.finishedsquarefeet12.fillna(df.finishedsquarefeet12.median())
     df.lotsizesquarefeet = df.lotsizesquarefeet.fillna(df.lotsizesquarefeet.median())
     df.yearbuilt = df.yearbuilt.fillna(df.yearbuilt.median())
-    df.structuretaxvaluedollarcnt = df.structuretaxvaluedollarcnt.fillna(df.structuretaxvaluedollarcnt.median)
+    df.structuretaxvaluedollarcnt = df.structuretaxvaluedollarcnt.fillna(df.structuretaxvaluedollarcnt.median())
     df.taxvaluedollarcnt = df.taxvaluedollarcnt.fillna(df.taxvaluedollarcnt.median())
     df.landtaxvaluedollarcnt = df.landtaxvaluedollarcnt.fillna(df.landtaxvaluedollarcnt.median())
     df.taxamount = df.taxamount.fillna(df.taxamount.median())
@@ -37,8 +37,22 @@ def combine_garage_and_pool(df):
     df = df.drop(columns=['garagecarcnt', 'poolcnt'])
     return df
 
+def label_county(row):
+    if row['fips'] == 6037:
+        return 'Los Angeles'
+    elif row['fips'] == 6059:
+        return 'Orange'
+    elif row['fips'] == 6111:
+        return 'Ventura'
+
+def create_county(df):
+    df['County'] = df.apply(lambda row: label_county(row), axis=1)
+    df = df.drop(columns='fips')
+    return df
+
 def create_new_features(df):
     df = combine_garage_and_pool(df)
+    df = create_county(df)
     return df
     
 def wrangle_data():
