@@ -33,7 +33,8 @@ def get_from_sql():
            LEFT JOIN storytype story USING (storytypeid) 
            LEFT JOIN typeconstructiontype construct USING (typeconstructiontypeid) 
     WHERE  prop.latitude IS NOT NULL 
-           AND prop.longitude IS NOT NULL;
+           AND prop.longitude IS NOT NULL
+           AND landuse.propertylandusetypeid = 261;
     '''
 
     url = get_url('zillow')
