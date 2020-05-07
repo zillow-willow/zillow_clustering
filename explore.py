@@ -7,6 +7,11 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.cluster import KMeans
+from scipy import stats
+
+
+
+#Functions to visualize optimizing for K
 
 def find_optimal_k(cluster_vars):
     """
@@ -42,6 +47,30 @@ def elbow_k_means_plots_2_vars(num1, num2, features_list):
         clusters = KMeans(k).fit(features_list).predict(features_list)
         ax.scatter(features_list.iloc[:,0], features_list.iloc[:,1], c=clusters)
         ax.set(title='k = {}'.format(k))
+
+   
+
+
+#Functions for clustering
+        
+def cluster_target_variable(train, test):
+    """
+    Takes in train and test dataframe and clusters the log error with k 6
+    returns train and test with cluster target added onto train and test dataframes
+    """
+
+    X_train = train[["logerror"]]
+    X_test = test[["logerror"]]
+
+    kmeans = KMeans(n_clusters=6, random_state = 123)
+    train["cluster_target"] = kmeans.fit_predict(X_train)
+    test["cluster_target"] = kmeans.predict(X_test)
+    
+    train["cluster_target"] = "Cluster " + train["cluster_target"].astype(str)
+    test["cluster_target"] = "Cluster " + test["cluster_target"].astype(str)
+    
+    return train, test
+                
         
 def get_location_clusters(train, test):
     """
@@ -53,7 +82,7 @@ def get_location_clusters(train, test):
     # K of 5
     X_train = train[["latitude", "longitude"]]
     X_test = test[["latitude", "longitude"]]
-    kmeans = KMeans(5)
+    kmeans = KMeans(5n random_state = 123)
     kmeans.fit(X_train)
     train["n_location_cluster_k5"] = kmeans.predict(X_train)
     train["s_location_cluster_k5"] = 'cluster_' + (train.n_location_cluster_k5).astype(str)
@@ -73,6 +102,10 @@ def get_location_clusters(train, test):
     
     return train, test
         
+
+    
+#Functions for stats testing    
+    
     
 def t_test_location_cluster_k5(train):
     """Runs a T-Test for each cluster group in k5 against overall logerror mean
