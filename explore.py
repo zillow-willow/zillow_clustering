@@ -111,9 +111,9 @@ def cluster_year_sqft_roomcount(train_scaled, test_scaled, train, test):
     kmeans = KMeans(6, random_state = 123)
     kmeans.fit(X_train)
     train["n_size_and_year_cluster"] = kmeans.predict(X_train)
-    train["s_size_and_year_cluster"] = 'cluster_' + (train.n_size_to_year_cluster).astype(str)
+    train["s_size_and_year_cluster"] = 'cluster_' + (train.n_size_and_year_cluster).astype(str)
     test["n_size_and_year_cluster"] = kmeans.predict(X_test)
-    test["s_size_and_year_cluster"] = 'cluster_' + (test.n_size_to_year_cluster).astype(str)
+    test["s_size_and_year_cluster"] = 'cluster_' + (test.n_size_and_year_cluster).astype(str)
     return kmeans, train, test
         
 
