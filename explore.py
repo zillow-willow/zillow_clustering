@@ -76,31 +76,45 @@ def get_location_clusters(train, test):
     """
     Takes in train and test and uses latitude and longitutde to cluster into a 2 different location clusters
     one using k of 5 and the other k of 6
-    returns train and test with columns for each in numeric and string form
+    returns train ,test kmean5, kmeans 6
     """
 
     # K of 5
     X_train = train[["latitude", "longitude"]]
     X_test = test[["latitude", "longitude"]]
-    kmeans = KMeans(5, random_state = 123)
-    kmeans.fit(X_train)
-    train["n_location_cluster_k5"] = kmeans.predict(X_train)
+    kmeans5 = KMeans(5, random_state = 123)
+    kmeans5.fit(X_train)
+    train["n_location_cluster_k5"] = kmeans5.predict(X_train)
     train["s_location_cluster_k5"] = 'cluster_' + (train.n_location_cluster_k5).astype(str)
-    test["n_location_cluster_k5"] = kmeans.predict(X_test)
+    test["n_location_cluster_k5"] = kmeans5.predict(X_test)
     test["s_location_cluster_k5"] = 'cluster_' + (test.n_location_cluster_k5).astype(str)
 
 
     #K of 6
     X_train = train[["latitude", "longitude"]]
     X_test = test[["latitude", "longitude"]]
-    kmeans = KMeans(6)
-    kmeans.fit(X_train)
-    train["n_location_cluster_k6"] = kmeans.predict(X_train)
+    kmeans6 = KMeans(6, random_state = 123)
+    kmeans6.fit(X_train)
+    train["n_location_cluster_k6"] = kmeans6.predict(X_train)
     train["s_location_cluster_k6"] = 'cluster_' + (train.n_location_cluster_k6).astype(str)
-    test["n_location_cluster_k6"] = kmeans.predict(X_test)
+    test["n_location_cluster_k6"] = kmeans6.predict(X_test)
     test["s_location_cluster_k6"] = 'cluster_' + (test.n_location_cluster_k6).astype(str)
     
-    return train, test
+    return train, test, kmeans5, kmeans6
+
+
+def cluster_year_sqft_roomcount(train_scaled, test_scaled):
+    """Takes in train_scaled and test_scaled dataframes and using Kmeans with 6 of
+    return kmeans, train, test"""
+    X_train = train_scaled[["calculatedfinishedsquarefeet", "room_count", "yearbuilt"]]
+    X_test = test_scaled[["calculatedfinishedsquarefeet", "room_count", "yearbuilt"]]
+    kmeans = KMeans(6, random_state = 123)
+    kmeans.fit(X_train)
+    train["n_size_and_year_cluster"] = kmeans.predict(X_train)
+    train["s_size_and_year_cluster"] = 'cluster_' + (train.n_size_to_year_cluster).astype(str)
+    test["n_size_and_year_cluster"] = kmeans.predict(X_test)
+    test["s_size_and_year_cluster"] = 'cluster_' + (test.n_size_to_year_cluster).astype(str)
+    return kmeans, train, test
         
 
     
@@ -170,7 +184,7 @@ def t_test_location_cluster_k6(train):
     if p0 < alpha:
         print("We reject the null hypothesis for Cluster 0")
     else:
-        print("We fail to reject the null hypothesis for for Cluster 0")
+        print("We fail to reject the null hypothesis for Cluster 0")
 
     
     loc_1 = train[train.n_location_cluster_k6 == 1]
