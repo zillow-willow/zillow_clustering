@@ -25,6 +25,7 @@ def impute_median(df):
     return df
 
 def pool_and_garage(df):
+    '''Takes in the zillow DataFrame and checks the pool and garage status of the property and returns a string catagory'''
     if (df.garagecarcnt > 0) and (df.poolcnt > 0):
         return 'Garage and Pool'
     elif df.garagecarcnt > 0:
@@ -35,11 +36,13 @@ def pool_and_garage(df):
         return 'No Pool or Garage'
     
 def combine_garage_and_pool(df):
+    '''Takes in the zillow DataFrame and adds a column that denotes whether a property has a garage or pool. The garage and pool columns are then removed to reduce redundency and the DataFrame is returned.'''
     df['extras'] = df.apply(pool_and_garage, axis=1)
     df = df.drop(columns=['garagecarcnt', 'poolcnt'])
     return df
 
 def label_county(row):
+    '''Takes in a single row of the zillow DataFrame and returns the county name based on the fips column'''
     if row['fips'] == 6037:
         return 'Los Angeles'
     elif row['fips'] == 6059:
@@ -48,16 +51,19 @@ def label_county(row):
         return 'Ventura'
 
 def create_county(df):
+    '''Creates a county column on zillow DataFrame and removes fips column'''
     df['County'] = df.apply(lambda row: label_county(row), axis=1)
     df = df.drop(columns='fips')
     return df
 
 def create_new_features(df):
+    '''Adds new columns onto the zillow DataFrame'''
     df = combine_garage_and_pool(df)
     df = create_county(df)
     return df
 
 def handle_outliers(df):
+    '''Takes in the zillow DataFrame, removes row that were determined to be outliers and returns the DataFrame'''
     df = df[df.bathroomcnt <= 6]
     df = df[df.bedroomcnt <= 7]
     df = df[df.calculatedfinishedsquarefeet <= 5382]
@@ -70,6 +76,7 @@ def handle_outliers(df):
     return df
 
 def wrangle_data():
+    '''Takes no arguments and returns a prepared zillow DataFrame'''
     zillow = get_data()
     zillow = drop_columns(zillow)
     zillow = impute_median(zillow)

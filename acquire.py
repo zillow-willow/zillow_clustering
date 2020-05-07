@@ -6,6 +6,7 @@ def get_url(database):
     return f'mysql+pymysql://{user}:{password}@{host}/{database}'
 
 def get_from_sql():
+    '''Takes no arguments and retrieves data from the MySQl zillow database'''
     query = '''
     SELECT prop.*, 
            pred1.logerror, 
@@ -44,6 +45,7 @@ def get_from_sql():
     zillow.to_csv('zillow_acquire.csv')
     
 def drop_columns(df):
+    '''Takes in the zillow DataFrame removes specific columns'''
     columns_to_drop = ['architecturalstyletypeid', 'airconditioningtypeid','basementsqft', 
                        'buildingclasstypeid', 'decktypeid', 'finishedfloor1squarefeet',
                        'finishedsquarefeet13', 'finishedsquarefeet15', 'finishedsquarefeet50', 
@@ -60,6 +62,7 @@ def drop_columns(df):
     return df
     
 def get_data():
+    '''Takes no arguments, creates a csv if one doesn't exist, and returns the zillow DataFrame'''
     if not path.isfile("zillow_acquire.csv"):
         get_from_sql()
         
