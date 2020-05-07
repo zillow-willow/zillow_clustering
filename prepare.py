@@ -2,15 +2,17 @@ import pandas as pd
 from acquire import get_data
 
 def drop_columns(df):
+    '''Takes in the zillow DataFrame and removes specific columns'''
     columns_to_drop = ['id', 'parcelid', 'propertylandusetypeid', 'propertylandusedesc', 
                       'calculatedbathnbr', 'buildingqualitytypeid', 'fullbathcnt', 'assessmentyear', 
                        'propertyzoningdesc', 'propertycountylandusecode', 'rawcensustractandblock', 
                        'airconditioningdesc', 'heatingorsystemdesc', 'regionidcity', 'regionidzip', 
-                       'roomcnt', 'unitcnt', 'censustractandblock']
+                       'roomcnt', 'unitcnt', 'censustractandblock', 'regionidcounty']
     df = df.drop(columns=columns_to_drop)
     return df
 
 def impute_median(df):
+    '''Takes in the zillow DataFrame and imputes the median onto specific columns'''
     df.calculatedfinishedsquarefeet = df.calculatedfinishedsquarefeet.fillna(df.calculatedfinishedsquarefeet.median())
     df.finishedsquarefeet12 = df.finishedsquarefeet12.fillna(df.finishedsquarefeet12.median())
     df.lotsizesquarefeet = df.lotsizesquarefeet.fillna(df.lotsizesquarefeet.median())
@@ -54,12 +56,25 @@ def create_new_features(df):
     df = combine_garage_and_pool(df)
     df = create_county(df)
     return df
-    
+
+def handle_outliers(df):
+    df = df[df.bathroomcnt <= 6]
+    df = df[df.bedroomcnt <= 7]
+    df = df[df.calculatedfinishedsquarefeet <= 5382]
+    df = df[df.finishedsquarefeet12 <= 5400]
+    df = df[df.lotsizesquarefeet <= 17767]
+    df = df[df.structuretaxvaluedollarcnt <= 671826]
+    df = df[df.taxvaluedollarcnt <= 1892955]
+    df = df[df.landtaxvaluedollarcnt <= 1404318]
+
+    return df
+
 def wrangle_data():
     zillow = get_data()
     zillow = drop_columns(zillow)
     zillow = impute_median(zillow)
     zillow = create_new_features(zillow)
     zillow = zillow[(zillow.bathroomcnt > 0) & (zillow.bedroomcnt > 0)]
+    zillow = handle_outliers(zillow)
     
     return zillow
