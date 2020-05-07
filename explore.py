@@ -103,7 +103,7 @@ def get_location_clusters(train, test):
     return train, test, kmeans5, kmeans6
 
 
-def cluster_year_sqft_roomcount(train_scaled, test_scaled):
+def cluster_year_sqft_roomcount(train_scaled, test_scaled, train, test):
     """Takes in train_scaled and test_scaled dataframes and using Kmeans with 6 of
     return kmeans, train, test"""
     X_train = train_scaled[["calculatedfinishedsquarefeet", "room_count", "yearbuilt"]]
