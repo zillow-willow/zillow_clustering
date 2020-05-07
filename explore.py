@@ -82,7 +82,7 @@ def get_location_clusters(train, test):
     # K of 5
     X_train = train[["latitude", "longitude"]]
     X_test = test[["latitude", "longitude"]]
-    kmeans = KMeans(5n random_state = 123)
+    kmeans = KMeans(5, random_state = 123)
     kmeans.fit(X_train)
     train["n_location_cluster_k5"] = kmeans.predict(X_train)
     train["s_location_cluster_k5"] = 'cluster_' + (train.n_location_cluster_k5).astype(str)
