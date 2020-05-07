@@ -63,11 +63,11 @@ def cluster_target_variable(train, test):
     X_test = test[["logerror"]]
 
     kmeans = KMeans(n_clusters=6, random_state = 123)
-    train["cluster_target"] = kmeans.fit_predict(X_train)
-    test["cluster_target"] = kmeans.predict(X_test)
+    train["n_cluster_target"] = kmeans.fit_predict(X_train)
+    test["n_cluster_target"] = kmeans.predict(X_test)
     
-    train["cluster_target"] = "Cluster " + train["cluster_target"].astype(str)
-    test["cluster_target"] = "Cluster " + test["cluster_target"].astype(str)
+    train["s_cluster_target"] = "Cluster " + train["cluster_target"].astype(str)
+    test["s_cluster_target"] = "Cluster " + test["cluster_target"].astype(str)
     
     return train, test
                 
