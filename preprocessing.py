@@ -7,6 +7,12 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 
+def get_month(row):
+    return row[5:7]
+
+def get_day(row):
+    return row[-2:]
+
 def new_features(df):
     """
     Returns zillow dataframe with the following new features:
@@ -24,6 +30,8 @@ def new_features(df):
     df["avg_sqft_per_room"] = df.calculatedfinishedsquarefeet / df.room_count
     df["dollar_per_sqft_home"] = df.structuretaxvaluedollarcnt / df.finishedsquarefeet12
     df.drop(columns=["bathroomcnt" , "bedroomcnt"], inplace=True)
+    df['trans_month'] = df.transactiondate.apply(lambda row: get_month(row))
+    df['trans_day'] = df.transactiondate.apply(lambda row: get_day(row))
 
     return df
 
