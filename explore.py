@@ -229,3 +229,23 @@ def t_test_location_cluster_k6(train):
     print(f"Our p value for Cluster 4 is {p4:.2}")
     print(f"Our p value for Cluster 5 is {p5:.2}")
     return p0, p1, p2, p3, p4, p5
+
+## Functions for visuals
+
+
+def boxplots_for_logerror_clusters(train):
+    """Plots a few of the features against logerror"""
+    plt.figure(figsize=(13,10))
+    plt.subplot(2,2,1)
+    plt.title("Finished SqFt")
+    sns.boxplot(data=train, x="calculatedfinishedsquarefeet", y="s_cluster_target")
+    plt.subplot(2,2,2)
+    plt.title("Lot Size")
+    sns.boxplot(data=train, x="lotsizesquarefeet", y="s_cluster_target")
+    plt.subplot(2,2,3)
+    plt.title("Year Built")
+    sns.boxplot(data=train, x="yearbuilt", y="s_cluster_target")
+    plt.subplot(2,2,4)
+    plt.title("Assessed Home Value")
+    sns.boxplot(data=train, x="taxvaluedollarcnt", y="s_cluster_target")
+    plt.suptitle("Logerror Clusters against Various Features")
