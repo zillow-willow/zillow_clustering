@@ -56,7 +56,7 @@ def elbow_k_means_plots_2_vars(num1, num2, features_list):
 def cluster_target_variable(train, test):
     """
     Takes in train and test dataframe and clusters the log error with k 6
-    returns train and test with cluster target added onto train and test dataframes
+    returns train, test, kmeans
     """
 
     X_train = train[["logerror"]]
@@ -66,10 +66,10 @@ def cluster_target_variable(train, test):
     train["n_cluster_target"] = kmeans.fit_predict(X_train)
     test["n_cluster_target"] = kmeans.predict(X_test)
     
-    train["s_cluster_target"] = "Cluster " + train["cluster_target"].astype(str)
-    test["s_cluster_target"] = "Cluster " + test["cluster_target"].astype(str)
+    train["s_cluster_target"] = "Cluster " + train["n_cluster_target"].astype(str)
+    test["s_cluster_target"] = "Cluster " + test["n_cluster_target"].astype(str)
     
-    return train, test
+    return train, test, kmeans
                 
         
 def get_location_clusters(train, test):
