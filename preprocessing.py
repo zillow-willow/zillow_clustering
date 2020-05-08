@@ -49,14 +49,16 @@ def split_data(df, train_size=.7, seed=123):
     return train, test
 
 
-def scale_columns(train, test):
+def scale_columns(train_df, test_df):
     """ 
     Scales all numeric columns in train and test using a MinMax scaler
     returns the scaler, scaled dataframes for train and test.
     """
+    train_scaled_df = train_df.copy()
+    test_scaled_df = test_df.copy()
     scaler = MinMaxScaler()
-    numeric_columns = list(train.select_dtypes('number').columns)
-    train[numeric_columns] = scaler.fit_transform(train[numeric_columns])
-    test[numeric_columns] = scaler.transform(test[numeric_columns])
-    return scaler, train, test
+    numeric_columns = list(train_scaled_df.select_dtypes('number').columns)
+    train_scaled_df[numeric_columns] = scaler.fit_transform(train_scaled_df[numeric_columns])
+    test_scaled_df[numeric_columns] = scaler.transform(test_scaled_df[numeric_columns])
+    return scaler, train_scaled_df, test_scaled_df
 
