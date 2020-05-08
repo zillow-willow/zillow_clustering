@@ -40,7 +40,7 @@ def create_model_without_clusters(train, val):
     
 
 def create_model_with_logerror_clusters(train, val):
-     '''
+    '''
     Takes in the train and validation set, fits a model, prints out the metrics of the model, and returns nothing.
     '''
     prediction_diffs = []
@@ -99,7 +99,7 @@ def create_model_with_logerror_clusters(train, val):
     
     
 def create_model_with_location_clusters(train, val):
-     '''
+    '''
     Takes in the train and validation set, fits a model, prints out the metrics of the model, and returns nothing.
     '''
     prediction_diffs = []
@@ -158,7 +158,7 @@ def create_model_with_location_clusters(train, val):
     
     
 def create_model_with_size_and_year_clusters(train, val):
-     '''
+    '''
     Takes in the train and validation set, fits a model, prints out the metrics of the model, and returns nothing.
     '''
     prediction_diffs = []
@@ -217,7 +217,7 @@ def create_model_with_size_and_year_clusters(train, val):
     
     
 def create_test_model_with_location_cluster(train, test):
-     '''
+    '''
     Takes in the train and test set, fits a model, prints out the metrics of the model, and returns nothing.
     '''
     prediction_diffs = []
