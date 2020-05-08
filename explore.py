@@ -307,7 +307,8 @@ def boxplots_for_logerror_clusters(train):
     plt.subplot(2,2,4)
     plt.title("Assessed Home Value")
     sns.boxplot(data=train, x="taxvaluedollarcnt", y="s_cluster_target")
-    plt.suptitle("Logerror Clusters against Various Features")
+    plt.suptitle("Logerror Clusters against Various Features", fontsize=16)
+    plt.tight_layout(rect=[0, 0.03, 1, 0.95])
 
     
 def logerror_distro_visualization(df):
@@ -368,3 +369,126 @@ def num_home_by_county(train):
     plt.xlabel('County Name')
     plt.ylabel('Number of Homes')
     plt.show()
+    
+    
+def homevalue_distro_visualization(df):
+    """
+    This visualization shows you 4 distrubution plots of the home values
+    1st = all counties
+    2nd = LA county
+    3rd = Orange County
+    4th = Ventura County
+    """
+    c="#006AFF"
+    zillow = df
+    la_county = df[df.County == "Los Angeles"]
+    orange_county = df[df.County == "Orange"]
+    ventura_county = df[df.County == "Ventura"]
+    
+    plt.figure(figsize=(12,12))
+    sns.distplot(zillow.taxvaluedollarcnt, color=c)
+    plt.ylabel("Count")
+    plt.title("Home Value Distribution for all three Counties")
+
+    plt.figure(figsize=(12,12))
+
+    plt.suptitle('Home Value by County - note Y axis is not on the same scale', fontsize=14)
+
+    plt.subplot(3, 3, 1)
+    sns.distplot(la_county.taxvaluedollarcnt, color=c)
+    plt.ylabel("Count")
+    plt.title("Los Angeles")
+
+    plt.subplot(3, 3, 2)
+    sns.distplot(orange_county.taxvaluedollarcnt, color=c)
+    plt.ylabel("Count")
+    plt.title("Orange County")
+
+    plt.subplot(3, 3, 3)
+    sns.distplot(ventura_county.taxvaluedollarcnt, color=c)
+    plt.ylabel("Count")
+    plt.title("Ventura County")
+    
+    
+# Summaries
+
+def home_value_summary(train):
+    """
+    Shows us a summary of mean, median, max, min, 
+    and std for the 3 counties
+    """
+    
+    #get mean for each county
+    county_mean = pd.DataFrame(train.groupby("County").taxvaluedollarcnt.mean())
+    county_mean.columns = ['Mean Home Value']
+    county_mean['Mean Home Value'] = county_mean['Mean Home Value'].round().astype(int) 
+    
+    #get median for each county
+    county_median = pd.DataFrame(train.groupby("County").taxvaluedollarcnt.median())
+    county_median.columns = ['Median Home Value']
+    county_median['Median Home Value'] = county_median['Median Home Value'].round().astype(int)
+    
+    #get max for each county    
+    county_max = pd.DataFrame(train.groupby("County").taxvaluedollarcnt.max())
+    county_max.columns = ['Max Home Value']
+    county_max['Max Home Value'] = county_max['Max Home Value'].round().astype(int)
+    
+    #get min for each county       
+    county_min = pd.DataFrame(train.groupby("County").taxvaluedollarcnt.min())
+    county_min.columns = ['Min Home Value']
+    county_min['Min Home Value'] = county_min['Min Home Value'].round().astype(int)
+    
+    
+    #get STD for each county     
+    county_std = pd.DataFrame(train.groupby("County").taxvaluedollarcnt.std())
+    county_std.columns = ['STD of Home Values']
+    county_std['STD of Home Values'] = county_std['STD of Home Values'].round().astype(int)
+    
+    #merge all info into one summary
+    summary1 = pd.merge(county_mean, county_median, left_index=True, right_index=True)
+    summary2 = pd.merge(county_max , county_min , left_index=True, right_index=True)
+    summary3 = pd.merge(summary1 , summary2 , left_index=True, right_index=True)
+    summary = pd.merge(summary3 , county_std , left_index=True, right_index=True)
+    
+    return summary
+
+
+def logerror_summary(train):
+    """
+    Shows us a summary of mean, median, max, min, 
+    and std for the 3 counties
+    """
+    
+    #get mean for each county
+    county_mean = pd.DataFrame(train.groupby("County").logerror.mean())
+    county_mean.columns = ['Mean Logerror']
+
+    
+    #get median for each county
+    county_median = pd.DataFrame(train.groupby("County").logerror.median())
+    county_median.columns = ['Median Logerror']
+
+    
+    #get max for each county    
+    county_max = pd.DataFrame(train.groupby("County").logerror.max())
+    county_max.columns = ['Max Logerror']
+
+    
+    #get min for each county       
+    county_min = pd.DataFrame(train.groupby("County").logerror.min())
+    county_min.columns = ['Min Logerror']
+
+    
+    
+    #get STD for each county     
+    county_std = pd.DataFrame(train.groupby("County").logerror.std())
+    county_std.columns = ['STD of Logerror']
+
+    
+    #merge all info into one summary
+    summary1 = pd.merge(county_mean, county_median, left_index=True, right_index=True)
+    summary2 = pd.merge(county_max , county_min , left_index=True, right_index=True)
+    summary3 = pd.merge(summary1 , summary2 , left_index=True, right_index=True)
+    summary = pd.merge(summary3 , county_std , left_index=True, right_index=True)
+    
+    return summary
